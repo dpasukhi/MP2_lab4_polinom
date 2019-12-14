@@ -60,7 +60,7 @@ public:
 	Polynom operator*(double num)const; 
 	Polynom operator-(Polynom& pol);
 	friend ostream& operator<<(ostream& o, const Polynom& p);
-	friend istream& operator>>(istream& i, const Polynom& p);
+	friend istream& operator>>(istream& i, Polynom& p);
 	void sort();
 private:
 	Monom* head;

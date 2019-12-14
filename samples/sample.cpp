@@ -44,25 +44,25 @@ int main()
 	//ppp.sort();
 	//cout << ppp;
 
-
-		cmatch result;
-		smatch res;
-		regex rx("^[\\d]+[\\.\\d+)]*");
-		regex rxx("[a-z]{1}[\^]{1}[0-9]+");
-		string mon;
-		cin >> mon;
-		std::sregex_iterator beg{ mon.cbegin(), mon.cend(), rxx }; // итератор
-// на начало последовательности найденных совпадений
-		std::sregex_iterator end{};  // 'нулевой' итератор
-		regex_search(mon.c_str(), result, rx);
-		for (auto i = beg; i != end; ++i)
-		{
-
-			std::cout << i->str() /*<< "(" << i->position() << ") ["
-				<< i->length() << "]\n"*/;
-		}
-		//regex_search(mon.c_str(), res, rxx);
-		cout << result[0] << endl;
+//
+//		cmatch result;
+//		smatch res;
+//		regex rx("^[\\d]+[\\.\\d+)]*");
+//		regex rxx("[a-z]{1}[\^]{1}[0-9]+");
+//		string mon;
+//		cin >> mon;
+//		std::sregex_iterator beg{ mon.cbegin(), mon.cend(), rxx }; // итератор
+//// на начало последовательности найденных совпадений
+//		std::sregex_iterator end{};  // 'нулевой' итератор
+//		regex_search(mon.c_str(), result, rx);
+//		for (auto i = beg; i != end; ++i)
+//		{
+//
+//			std::cout << i->str() /*<< "(" << i->position() << ") ["
+//				<< i->length() << "]\n"*/;
+//		}
+//		//regex_search(mon.c_str(), res, rxx);
+//		cout << result[0] << endl;
 		//for (int l = 0; l < res.size(); l++)
 		//	cout << res[l] << endl;
 
@@ -73,5 +73,7 @@ int main()
 	//Monom m(4, tt, 3);
 	//for (int i = 0; i < 2; i++)
 	//	cout << m.name[i].str << " ";
+	Polynom p;
+	cin >> p;
 	return 0;
 }

@@ -330,11 +330,6 @@ Polynom Polynom::operator+(Polynom& pol)
 	pol.sort();
 	Polynom tmp(*this);
 	Monom* m_tmp = head;
-	//while (m_tmp != nullptr)
-	//{
-	//	tmp.push_back(m_tmp->coeff,m_tmp->name,m_tmp->size);
-	//	m_tmp = m_tmp->next;
-	//}
 
 	bool exist=false;
 
@@ -468,25 +463,47 @@ ostream& operator<<(ostream& o, const Polynom& p)
 	return o;
 }
 
-istream& operator>>(istream& istr, const Polynom& p)
+istream& operator>>(istream& istr, Polynom& p)
 {
 	cout << "Input count of monoms";
 	int count;
 	istr >> count;
-	cout << "Input you polynoms";
 	for (int i = 0; i<count; i++)
 	{
+		cout << "Input you polynoms[" << i << "]" << endl;
 		cmatch result;
-		cmatch res;
+		smatch res;
 		regex rx("^[\\d]+[\\.\\d+)]*");
+		regex lx("[\\d]+[\\.\\d+)]*");
 		regex rxx("[a-z]{1}[\^]{1}[0-9]+");
+		regex rx_mon("[a-z]{1}");
 		string mon;
 		istr >> mon;
 		regex_search(mon.c_str(), result, rx);
-		regex_search(mon.c_str(), res, rxx);
-		cout << result[0] << endl;
-		for (int l = 0; l < res.size(); l++)
-			cout << res[l] << endl;
+		cout << result.str();
+		//regex_search(mon.c_str(), res, rxx);
+		std::sregex_iterator beg{ mon.cbegin(), mon.cend(), rxx }; 
+		std::sregex_iterator end{}; 
+		int size=0;
+		int ind=0;
+		Type* mass=new Type[100];
+		for (auto i = beg; i != end; ++i, ind++)
+		{
+			cmatch result_num;
+			cmatch resut_word;
+			regex_search(i->str().c_str(), resut_word, rx_mon);
+			cout << endl;
+			cout << i->str() << endl;
+			regex_search(i->str().c_str(), result_num, lx);
+			mass[ind].str = resut_word.str();
+			cout << resut_word.str()<<"| "<<resut_word.str()<<endl;
+
+			mass[ind].pow = stoi(result_num.str());
+			size = i->length();
+			//std::cout << i->str() /*<< "(" << i->position() << ") ["
+				//<< i->length() << "]\n"*/;
+		}
+		p.push_back(stod(result.str()), mass, size);
 	}
 	return istr;
 }
