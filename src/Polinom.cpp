@@ -198,13 +198,14 @@ void Polynom::insert(int ind, double _coeff, Type* m, int count)
 	}
 }
 
-void Polynom::Delete(int ind)
+Monom* Polynom::Delete(int ind)
 {
 	if (ind == 0)
 	{
 		Monom* t = head->next;
 		delete head;
 		head = t;
+		return t;
 	}
 	else if (ind < 0 || ind > get_size())
 		throw"Incorrect index";
@@ -220,6 +221,7 @@ void Polynom::Delete(int ind)
 		}
 		tmp2->next = tmp->next;
 		delete tmp;
+		return tmp2;
 	}
 }
 
@@ -420,27 +422,32 @@ void Polynom::sort()
 {
 	if (head != nullptr)
 	{
-		for (Monom* mon_i = head; mon_i->next != nullptr; mon_i = mon_i->next)
+		int i=0;
+		for (Monom* mon_i = head; mon_i!= nullptr; mon_i = mon_i->next,i++)
 		{
-			int j = 0;
-			for (Monom* mon_j = head; mon_j->next != nullptr; mon_j = mon_j->next, j++)
-				if (mon_j->coeff == 0.)
-					Delete(j);
-				else if (mon_j->pow > mon_j->next->pow)
-				{
-					mon_i->sort(mon_i->name,mon_i->size);
-					mon_j->sort(mon_j->name, mon_j->size);
-					insert(j, mon_j->coeff, mon_j->name, mon_j->size);
-					Delete(j);
-				}
+			int j = i+1;
+			for (Monom* mon_j=mon_i->next; mon_j!= nullptr; mon_j = mon_j->next,j++)
+			{
+					if (mon_j->coeff == 0.)
+						Delete(j);
+					else if (mon_i->pow > mon_j->pow)
+					{
+						mon_i->sort(mon_i->name, mon_i->size);
+						mon_j->sort(mon_j->name, mon_j->size);
+						insert(j+1, mon_i->coeff, mon_i->name, mon_i->size);
+						mon_i = Delete(i);
+					}
+				
+			}
 		}
 	}
 
 }
 
 
-ostream& operator<<(ostream& o, const Polynom& p)
+ostream& operator<<(ostream& o, Polynom& p)
 {
+	p.sort();
 	if (p.head != nullptr) 
 	{
 		Monom* temp = p.head;
@@ -474,36 +481,35 @@ istream& operator>>(istream& istr, Polynom& p)
 		cmatch result;
 		smatch res;
 		regex rx("^[\\d]+[\\.\\d+)]*");
-		regex lx("[\\d]+[\\.\\d+)]*");
+		regex lx("[0-9]+");
 		regex rxx("[a-z]{1}[\^]{1}[0-9]+");
-		regex rx_mon("[a-z]{1}");
+		regex rx_mon("[a-z]{1}[\\^]+");
 		string mon;
 		istr >> mon;
 		regex_search(mon.c_str(), result, rx);
-		cout << result.str();
+		//cout << result.str();
 		//regex_search(mon.c_str(), res, rxx);
 		std::sregex_iterator beg{ mon.cbegin(), mon.cend(), rxx }; 
 		std::sregex_iterator end{}; 
-		int size=0;
 		int ind=0;
 		Type* mass=new Type[100];
 		for (auto i = beg; i != end; ++i, ind++)
 		{
 			cmatch result_num;
-			cmatch resut_word;
-			regex_search(i->str().c_str(), resut_word, rx_mon);
-			cout << endl;
-			cout << i->str() << endl;
+			string resut_word="";
+			resut_word += i->str()[0];
+			//regex_search(i->str().c_str(), resut_word, rx_mon);
+			//cout << resut_word;
+			//cout << i->str()[0] << endl;
 			regex_search(i->str().c_str(), result_num, lx);
-			mass[ind].str = resut_word.str();
-			cout << resut_word.str()<<"| "<<resut_word.str()<<endl;
-
+			mass[ind].str = resut_word;
 			mass[ind].pow = stoi(result_num.str());
-			size = i->length();
 			//std::cout << i->str() /*<< "(" << i->position() << ") ["
 				//<< i->length() << "]\n"*/;
 		}
-		p.push_back(stod(result.str()), mass, size);
+		double coef = strtod(result.str().c_str(),0);
+		cout << result.str()<<" | " << coef << endl;
+		p.push_back(coef, mass, ind);
 	}
 	return istr;
 }

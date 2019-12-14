@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cmath>
 #include <regex>
+#include <string>
 using namespace std;
 
 
@@ -51,7 +52,7 @@ public:
 	void push_back(double _coeff,Type* m,int count);
 	int get_size();
 	void insert(int ind, double _coeff,Type* m, int count);
-	void Delete(int);
+	Monom* Delete(int);
 	void print_all();
 	void clear();
 	Polynom& operator=(Polynom& pol);
@@ -59,7 +60,7 @@ public:
 	Polynom operator+(Polynom& pol);
 	Polynom operator*(double num)const; 
 	Polynom operator-(Polynom& pol);
-	friend ostream& operator<<(ostream& o, const Polynom& p);
+	friend ostream& operator<<(ostream& o, Polynom& p);
 	friend istream& operator>>(istream& i, Polynom& p);
 	void sort();
 private:
