@@ -6,6 +6,8 @@ using namespace std;
 
 int main()
 {
+	//setlocale(0, "rus");
+	//setlocale(LC_NUMERIC, "C");
 	//Polynom P;
 	//P.push_back(1, 2);
 	//P.push_back(3, 4);
@@ -32,48 +34,32 @@ int main()
 	//Polynom pp;
 	//P.push_back(4, t, 1);
 	//P.push_back(3, tt, 3);
+	//cout << P << endl;
+	//P.insert(1, 5, ttt, 3);
+	//P.Delete(1);
+	
 	//pp.push_back(3, ttt, 3);
 	//pp.push_back(4, tr, 1);
 	//P.sort();	
 	//pp.sort();
 	//Polynom ppp;
  //	ppp = P*pp;
+	//cout << P;
 	//P.print_all();
 	//pp.print_all();
 	//cout << "##########################################" << endl;
 	//ppp.sort();
 	//cout << ppp;
 
-//
-//		cmatch result;
-//		smatch res;
-//		regex rx("^[\\d]+[\\.\\d+)]*");
-//		regex rxx("[a-z]{1}[\^]{1}[0-9]+");
-//		string mon;
-//		cin >> mon;
-//		std::sregex_iterator beg{ mon.cbegin(), mon.cend(), rxx }; // итератор
-//// на начало последовательности найденных совпадений
-//		std::sregex_iterator end{};  // 'нулевой' итератор
-//		regex_search(mon.c_str(), result, rx);
-//		for (auto i = beg; i != end; ++i)
-//		{
-//
-//			std::cout << i->str() /*<< "(" << i->position() << ") ["
-//				<< i->length() << "]\n"*/;
-//		}
-//		//regex_search(mon.c_str(), res, rxx);
-//		cout << result[0] << endl;
-		//for (int l = 0; l < res.size(); l++)
-		//	cout << res[l] << endl;
 
-	//Type* tt = new Type[3];
-	//tt[0] = Type(0, "g");
-	//tt[1] = Type(2, "j");
-	//tt[2] = Type(1, "a");
-	//Monom m(4, tt, 3);
-	//for (int i = 0; i < 2; i++)
-	//	cout << m.name[i].str << " ";
-	Polynom p;
+	Polynom p,pp;
 	cin >> p;
+	cout <<"Your polynom [0] is: "<< p << endl;
+	cin >> pp;
+	cout << "Your polynom [1] is: " << pp << endl;
+	cout << p - pp << endl;
+	cout << p * pp << endl;
+	cout << p + pp << endl;
 	return 0;
+
 }

@@ -428,18 +428,22 @@ void Polynom::sort()
 			int j = i+1;
 			for (Monom* mon_j=mon_i->next; mon_j!= nullptr; mon_j = mon_j->next,j++)
 			{
-					if (mon_j->coeff == 0.)
-						Delete(j);
-					else if (mon_i->pow > mon_j->pow)
+					if (mon_i->pow > mon_j->pow)
 					{
 						mon_i->sort(mon_i->name, mon_i->size);
 						mon_j->sort(mon_j->name, mon_j->size);
 						insert(j+1, mon_i->coeff, mon_i->name, mon_i->size);
 						mon_i = Delete(i);
 					}
-				
 			}
 		}
+		i = 0;
+		for (Monom* mon_i = head; mon_i != nullptr; mon_i = mon_i->next, i++)
+			if (mon_i->coeff == 0.)
+			{
+				mon_i = Delete(i);
+			}
+
 	}
 
 }
@@ -457,8 +461,6 @@ ostream& operator<<(ostream& o, Polynom& p)
 				o <<temp->coeff;
 			else if(temp->coeff > 0 && temp != p.head)
 				o << "+" << temp->coeff;
-			else 
-				o << "-" << temp->coeff;
 			for (int i = 0; i < temp->size; i++)
 				o << temp->name[i].str << "^" << temp->name[i].pow;
 			temp = temp->next;
@@ -507,9 +509,15 @@ istream& operator>>(istream& istr, Polynom& p)
 			//std::cout << i->str() /*<< "(" << i->position() << ") ["
 				//<< i->length() << "]\n"*/;
 		}
-		double coef = strtod(result.str().c_str(),0);
-		cout << result.str()<<" | " << coef << endl;
-		p.push_back(coef, mass, ind);
+		if (result.str() != "") 
+		{
+			double coef = strtod(result.str().c_str(), 0);
+			p.push_back(coef, mass, ind);
+		}
+		else
+		{
+			p.push_back(1, mass, ind);
+		}
 	}
 	return istr;
 }
