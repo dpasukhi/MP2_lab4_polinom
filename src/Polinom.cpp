@@ -1,22 +1,23 @@
 #include "Polinom.h"
 
 
-constexpr double min_equa = 0.0000001; //epsilon
-
 /*########################################################################################################
                                           Methods for Monom
 #########################################################################################################*/
 
+//Default constructor
 Monom::Monom():pow(0),coeff(0),next(nullptr),size(0)
 {
 }
 
+//Destructor
 Monom::~Monom()
 {
 	delete[] name;
 	name = nullptr;
 }
 
+//Copy constructor
 Monom::Monom(const Monom& mon):coeff(mon.coeff),pow(mon.pow),next(mon.next),size(mon.size)
 {
 	name = new Type[size];
@@ -26,6 +27,7 @@ Monom::Monom(const Monom& mon):coeff(mon.coeff),pow(mon.pow),next(mon.next),size
 	}
 }
 
+//A constructor that takes a coefficient, an array of variables and their number, but a pointer to the next element=nullptr
 Monom::Monom(double n_coef,Type* m,int count):coeff(n_coef),next(nullptr),size(count)
 {
 	sort(m,count);
@@ -38,6 +40,7 @@ Monom::Monom(double n_coef,Type* m,int count):coeff(n_coef),next(nullptr),size(c
 	}
 }
 
+//A constructor that takes a coefficient, an array of variables and their number, and a pointer to the next element
 Monom::Monom(double n_coef, Type* m,int count, Monom* mon):coeff(n_coef),next(mon),size(count)
 {
 	sort(m, count);
@@ -50,6 +53,7 @@ Monom::Monom(double n_coef, Type* m,int count, Monom* mon):coeff(n_coef),next(mo
 	}
 }
 
+//sorting variables alphabetically in monomial
 void Monom::sort(Type* nam, int count)
 {
 	Type tmp;
@@ -84,6 +88,7 @@ void Monom::sort(Type* nam, int count)
 		
 }
 
+//Checking for a match all the variables & their powers
 bool Monom::operator==(const Monom& mon)
 {
 	bool tmp = true;
@@ -96,6 +101,7 @@ bool Monom::operator==(const Monom& mon)
 	return (pow == mon.pow&&size==mon.size&&tmp);
 }
 
+// Checking for a match all the variables
 bool Monom::Is_eq(Monom& mon)
 {
 	bool tmp = true;
@@ -112,15 +118,18 @@ bool Monom::Is_eq(Monom& mon)
                                             Methods for  Polynom
 #########################################################################################################*/
 
+//Default constructor
 Polynom::Polynom():head(nullptr)
 {
 }
 
+//Destructor
 Polynom::~Polynom()
 {
 	clear();
 }
 
+//Copy constructor
 Polynom::Polynom(const Polynom& pol):head(nullptr)
 {
 	Monom* tmp = pol.head;
@@ -131,6 +140,7 @@ Polynom::Polynom(const Polynom& pol):head(nullptr)
 	}
 }
 
+//Returns a pointer to the end of the list
 Monom* Polynom::get_tail()
 {
 
@@ -147,6 +157,7 @@ Monom* Polynom::get_tail()
 	}
 }
 
+//Insert at the end of the list 
 void Polynom::push_back(double _coeff,Type* m,int count)
 {
 	if (head == nullptr)
@@ -159,6 +170,7 @@ void Polynom::push_back(double _coeff,Type* m,int count)
 	}
 }
 
+//Returns a size of the list 
 int Polynom::get_size()
 {
 	Monom* temp = head;
@@ -174,6 +186,7 @@ int Polynom::get_size()
 	return couter;
 }
 
+//Insert at %ind% position of the list
 void Polynom::insert(int ind, double _coeff, Type* m, int count)
 {
 	Monom* tmp = head;
@@ -198,6 +211,7 @@ void Polynom::insert(int ind, double _coeff, Type* m, int count)
 	}
 }
 
+//Removing an item from a list at %ind% position
 Monom* Polynom::Delete(int ind)
 {
 	if (ind == 0)
@@ -225,6 +239,7 @@ Monom* Polynom::Delete(int ind)
 	}
 }
 
+//Display the polynomial on the screen. Equivalent to operation << Polynom
 void Polynom::print_all()
 {
 	if (head != nullptr) {
@@ -242,6 +257,7 @@ void Polynom::print_all()
 		std::cout << "Is_empty" << std::endl;
 }
 
+//List cleaning
 void Polynom::clear()
 {
 	int ind;
@@ -249,6 +265,8 @@ void Polynom::clear()
 		Delete(ind);
 }
 
+// *this polynomial is equal to the polynomial passed by the parameter
+//Assignment operation
 Polynom& Polynom::operator=( Polynom& pol)
 {
 	if (head == pol.head)
@@ -263,6 +281,7 @@ Polynom& Polynom::operator=( Polynom& pol)
 	return *this;
 }
 
+//Multiplication of two polynomials
 Polynom Polynom::operator*(Polynom& pol)
 {
 	sort();
@@ -326,6 +345,7 @@ Polynom Polynom::operator*(Polynom& pol)
 	return tmp;
 }
 
+//Addition of two polynomials
 Polynom Polynom::operator+(Polynom& pol)
 {
 	sort();
@@ -361,6 +381,7 @@ Polynom Polynom::operator+(Polynom& pol)
 
 }
 
+//Multiplication of %*this% polynomial by double %num%
 Polynom Polynom::operator*(const double num) const
 {
 	Polynom tmp(*this);
@@ -379,6 +400,7 @@ Polynom Polynom::operator*(const double num) const
 	return tmp;
 }
 
+//Subtraction of two polynomials
 Polynom Polynom::operator-(Polynom& pol)
 {
 	sort();
@@ -418,6 +440,7 @@ Polynom Polynom::operator-(Polynom& pol)
 	return tmp;
 }
 
+//Sorting polynomial by degrees ascending
 void Polynom::sort()
 {
 	if (head != nullptr)
@@ -448,7 +471,7 @@ void Polynom::sort()
 
 }
 
-
+//Display Polynomial
 ostream& operator<<(ostream& o, Polynom& p)
 {
 	p.sort();
@@ -472,6 +495,7 @@ ostream& operator<<(ostream& o, Polynom& p)
 	return o;
 }
 
+//Entering a polynomial with the introduction of the number of monomials
 istream& operator>>(istream& istr, Polynom& p)
 {
 	cout << "Input count of monoms";
@@ -522,6 +546,7 @@ istream& operator>>(istream& istr, Polynom& p)
 	return istr;
 }
 
+//sorting variables alphabetically in monomial
 void ssort(Type* nam, int count)
 {
 	Type tmp;

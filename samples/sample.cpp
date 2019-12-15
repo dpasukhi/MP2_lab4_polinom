@@ -57,9 +57,10 @@ int main()
 	cout <<"Your polynom [0] is: "<< p << endl;
 	cin >> pp;
 	cout << "Your polynom [1] is: " << pp << endl;
-	cout << p - pp << endl;
-	cout << p * pp << endl;
-	cout << p + pp << endl;
+	cout <<"Polynom [0] - [1] is: "<< p - pp << endl;
+	cout <<"Polynom [0] * [1] is: "<< p * pp << endl;
+	cout <<"Polynom [0] + [1] is: "<< p + pp << endl;
+
 	return 0;
 
 }
