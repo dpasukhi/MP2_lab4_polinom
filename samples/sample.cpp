@@ -53,9 +53,10 @@ int main()
 
 
 	Polynom p,pp;
+	cout << "Inpute polynoms as (15b^2j^2...l^2 without repetitions of variables and you shoulf indicate their power" << endl;
 	cin >> p;
-	cout <<"Your polynom [0] is: "<< p << endl;
 	cin >> pp;
+	cout << "Your polynom [0] is: " << p << endl;
 	cout << "Your polynom [1] is: " << pp << endl;
 	cout <<"Polynom [0] - [1] is: "<< p - pp << endl;
 	cout <<"Polynom [0] * [1] is: "<< p * pp << endl;

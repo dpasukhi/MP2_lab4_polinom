@@ -105,11 +105,13 @@ bool Monom::operator==(const Monom& mon)
 bool Monom::Is_eq(Monom& mon)
 {
 	bool tmp = true;
+	if (mon.size != size)return false;
 	for (int i = 0; i < size; i++)
 	{
 		if (name[i].str != mon.name[i].str)
 			tmp = false;
 	}
+
 	return tmp;
 }
 
@@ -385,12 +387,6 @@ Polynom Polynom::operator+(Polynom& pol)
 Polynom Polynom::operator*(const double num) const
 {
 	Polynom tmp(*this);
-	//Monom* m_tmp = head;
-	//while (m_tmp != nullptr)
-	//{
-	//	tmp.push_back(m_tmp->coeff, m_tmp->pow);
-	//	m_tmp = m_tmp->next;
-	//}
 	Monom* m2_tmp = tmp.head;
 	while (m2_tmp != nullptr)
 	{
@@ -407,11 +403,6 @@ Polynom Polynom::operator-(Polynom& pol)
 	pol.sort();
 	Polynom tmp(*this);
 	Monom* m_tmp = head;
-	//while (m_tmp != nullptr)
-	//{
-	//	tmp.push_back(m_tmp->coeff, m_tmp->name, m_tmp->size);
-	//	m_tmp = m_tmp->next;
-	//}
 
 	bool exist = false;
 
@@ -434,7 +425,7 @@ Polynom Polynom::operator-(Polynom& pol)
 		{
 			int l = 0;
 			for (Monom* mon_j = tmp.head; mon_j != nullptr && mon_j->pow <= mon_i->pow; mon_j = mon_j->next, l++);
-			tmp.insert(l, -mon_i->coeff, mon_i->name, mon_i->size);
+			tmp.insert(l, (-1)*mon_i->coeff, mon_i->name, mon_i->size);
 		}
 	}
 	return tmp;
@@ -480,10 +471,10 @@ ostream& operator<<(ostream& o, Polynom& p)
 		Monom* temp = p.head;
 		while (temp != nullptr)
 		{
-			if (temp->coeff > 0&&temp==p.head)
-				o <<temp->coeff;
-			else if(temp->coeff > 0 && temp != p.head)
+			if (temp->coeff > 0&&temp!=p.head)
 				o << "+" << temp->coeff;
+			else 
+				o << temp->coeff;
 			for (int i = 0; i < temp->size; i++)
 				o << temp->name[i].str << "^" << temp->name[i].pow;
 			temp = temp->next;
@@ -501,39 +492,32 @@ istream& operator>>(istream& istr, Polynom& p)
 	cout << "Input count of monoms";
 	int count;
 	istr >> count;
-	for (int i = 0; i<count; i++)
+	for (int i = 0; i < count; i++)
 	{
-		cout << "Input you polynoms[" << i << "]" << endl;
+		cout << "Input you monoms[" << i << "]" << endl;
 		cmatch result;
 		smatch res;
-		regex rx("^[\\d]+[\\.\\d+)]*");
+		regex rx("^[\\-]*[\\d]+[\\.\\d+)]*");
 		regex lx("[0-9]+");
 		regex rxx("[a-z]{1}[\^]{1}[0-9]+");
 		regex rx_mon("[a-z]{1}[\\^]+");
 		string mon;
 		istr >> mon;
 		regex_search(mon.c_str(), result, rx);
-		//cout << result.str();
-		//regex_search(mon.c_str(), res, rxx);
-		std::sregex_iterator beg{ mon.cbegin(), mon.cend(), rxx }; 
-		std::sregex_iterator end{}; 
-		int ind=0;
-		Type* mass=new Type[100];
+		std::sregex_iterator beg{ mon.cbegin(), mon.cend(), rxx };
+		std::sregex_iterator end{};
+		int ind = 0;
+		Type* mass = new Type[100];
 		for (auto i = beg; i != end; ++i, ind++)
 		{
 			cmatch result_num;
-			string resut_word="";
+			string resut_word = "";
 			resut_word += i->str()[0];
-			//regex_search(i->str().c_str(), resut_word, rx_mon);
-			//cout << resut_word;
-			//cout << i->str()[0] << endl;
 			regex_search(i->str().c_str(), result_num, lx);
 			mass[ind].str = resut_word;
 			mass[ind].pow = stoi(result_num.str());
-			//std::cout << i->str() /*<< "(" << i->position() << ") ["
-				//<< i->length() << "]\n"*/;
 		}
-		if (result.str() != "") 
+		if (result.str() != "")
 		{
 			double coef = strtod(result.str().c_str(), 0);
 			p.push_back(coef, mass, ind);
